@@ -1,10 +1,14 @@
-import * as React from 'react'
-import './styles.css'
+"use client";
+import * as React from "react";
+import Analyze from "./components/analyze";
 
-function NextSEOAnalyze() {
-  return (
-    <div>NextSEOAnalyze 3</div>
-  )
+type Props = {
+  disable: boolean;
+};
+
+function NextSEOAnalyze({ disable }: Props) {
+  if (disable === undefined) disable = process.env.NODE_ENV === "production";
+  return disable ? null : <Analyze />;
 }
 
-export default NextSEOAnalyze
+export default NextSEOAnalyze;
