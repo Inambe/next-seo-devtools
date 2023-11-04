@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist && NODE_ENV=production tsup --minify",
     "build:dev": "tsup --watch",

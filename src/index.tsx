@@ -3,12 +3,13 @@ import * as React from "react";
 import Analyze from "./components/analyze";
 
 type Props = {
-  disable: boolean;
+  disable?: boolean;
+  className?: string;
 };
 
-function NextSEOAnalyze({ disable }: Props) {
+function NextSEODevTools({ disable, className }: Props) {
   if (disable === undefined) disable = process.env.NODE_ENV === "production";
-  return disable ? null : <Analyze />;
+  return disable ? null : <Analyze className={className} />;
 }
 
-export default NextSEOAnalyze;
+export default NextSEODevTools;

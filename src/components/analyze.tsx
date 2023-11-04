@@ -9,7 +9,7 @@ export type BodySchema = {
   description: string | null;
 };
 
-function Analyze() {
+function Analyze({ className }: { className?: string }) {
   const [open, setOpen] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
   const [headSchema, setHeadSchema] = React.useState<BodySchema>({
@@ -28,7 +28,9 @@ function Analyze() {
   }, [pathname]);
 
   return (
-    <div className="fixed z-50 bottom-4 left-4 p-4 rounded bg-white border shadow max-w-lg text-sm">
+    <div
+      className={`fixed z-50 bottom-4 left-4 p-4 rounded bg-white border shadow max-w-lg text-sm ${className}`}
+    >
       {loading ? (
         <p>Loading ...</p>
       ) : open ? (
