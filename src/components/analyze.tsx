@@ -1,13 +1,20 @@
-import { getHeadElText, getMeta } from "@/utils";
+import { getHeadElText, getMeta, getOGAll } from "@/utils";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import "../styles.css";
 import clsx from "clsx";
 import BasicTab from "./tabs/basic";
+import OGTab from "./tabs/og";
 
 export type BodySchema = {
   title: string | null;
   description: string | null;
+  openGraph: {
+    title: string;
+    description: string;
+    image: string;
+    all: { name: string; value: string }[];
+  };
 };
 
 export type Tabs = "basic" | "open-graph" | "";
@@ -36,8 +43,14 @@ function Analyze({ className }: { className?: string }) {
   const [tab, setTab] = React.useState<Tabs>("basic");
   const [loading, setLoading] = React.useState(true);
   const [headSchema, setHeadSchema] = React.useState<BodySchema>({
-    title: null,
-    description: null,
+    title: "",
+    description: "",
+    openGraph: {
+      image: "",
+      title: "",
+      description: "",
+      all: [],
+    },
   });
   const pathname = usePathname();
   React.useEffect(() => {
@@ -45,6 +58,12 @@ function Analyze({ className }: { className?: string }) {
     const newHeadSchema: BodySchema = {
       title: getHeadElText("title"),
       description: getMeta("description"),
+      openGraph: {
+        title: getMeta("og:title", "property"),
+        description: getMeta("og:description", "property"),
+        image: getMeta("og:image", "property"),
+        all: getOGAll(),
+      },
     };
     setLoading(false);
     setHeadSchema(newHeadSchema);
@@ -82,6 +101,7 @@ function Analyze({ className }: { className?: string }) {
           </div>
 
           {tab === "basic" && <BasicTab headSchema={headSchema} />}
+          {tab === "open-graph" && <OGTab headSchema={headSchema} />}
         </div>
       ) : (
         <button className="p-4" onClick={() => setOpen(true)}>
