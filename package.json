@@ -42,5 +42,8 @@
     "SEO",
     "DevTools"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "clsx": "^2.0.0"
+  }
 }

@@ -2,15 +2,38 @@ import { getHeadElText, getMeta } from "@/utils";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import "../styles.css";
-import { TableHead, TableRow } from "./table";
+import clsx from "clsx";
+import BasicTab from "./tabs/basic";
 
 export type BodySchema = {
   title: string | null;
   description: string | null;
 };
 
+export type Tabs = "basic" | "open-graph" | "";
+
+type TabButtonProps = {
+  children: string | React.ReactElement;
+  active: boolean;
+  onClick: () => void;
+  [k: string]: any;
+};
+
+const TabButton = ({ children, active, onClick }: TabButtonProps) => (
+  <button
+    className={clsx(
+      "py-2 px-4 hover:bg-white transition",
+      active ? "bg-white" : "bg-gray-100"
+    )}
+    onClick={onClick}
+  >
+    {children}
+  </button>
+);
+
 function Analyze({ className }: { className?: string }) {
   const [open, setOpen] = React.useState(true);
+  const [tab, setTab] = React.useState<Tabs>("basic");
   const [loading, setLoading] = React.useState(true);
   const [headSchema, setHeadSchema] = React.useState<BodySchema>({
     title: null,
@@ -29,35 +52,41 @@ function Analyze({ className }: { className?: string }) {
 
   return (
     <div
-      className={`fixed z-50 bottom-4 left-4 p-4 rounded bg-white border shadow max-w-lg text-sm ${className}`}
+      className={`fixed z-50 bottom-4 left-4 rounded bg-white border shadow max-w-lg text-sm ${className}`}
     >
       {loading ? (
-        <p>Loading ...</p>
+        <p className="p-4">Loading ...</p>
       ) : open ? (
         <div>
-          <div className="border rounded">
-            <table>
-              <TableHead heads={["Name", "Value", "Characters"]} />
-              <tbody className="divide-y">
-                <TableRow title="Title" value={headSchema.title || ""} />
-                <TableRow
-                  title="Description"
-                  value={headSchema.description || ""}
-                />
-              </tbody>
-            </table>
-          </div>
-          <div className="pt-4 mt-4 border-t flex justify-end">
+          <div className="flex justify-between bg-gray-200">
+            <div className="flex divide-x">
+              <TabButton
+                active={tab === "basic"}
+                onClick={() => setTab("basic")}
+              >
+                Basic
+              </TabButton>
+              <TabButton
+                active={tab === "open-graph"}
+                onClick={() => setTab("open-graph")}
+              >
+                Open Graph
+              </TabButton>
+            </div>
             <button
-              className="py-1 px-2 bg-gray-100 hover:bg-gray-200 transition"
+              className="py-2 px-4  hover:bg-gray-300 transition"
               onClick={() => setOpen(false)}
             >
               Close
             </button>
           </div>
+
+          {tab === "basic" && <BasicTab headSchema={headSchema} />}
         </div>
       ) : (
-        <button onClick={() => setOpen(true)}>SEO DevTools</button>
+        <button className="p-4" onClick={() => setOpen(true)}>
+          SEO DevTools
+        </button>
       )}
     </div>
   );
