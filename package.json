@@ -7,7 +7,8 @@
   "scripts": {
     "build": "rm -rf ./dist && NODE_ENV=production tsup --minify",
     "build:dev": "tsup --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "publish": "npm publish"
   },
   "peerDependencies": {
     "next": "14.0.1",
