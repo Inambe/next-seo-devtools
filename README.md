@@ -4,6 +4,8 @@ Analyze SEO while developing your Next.js websites/apps.
 
 (Only App Router is supported. Support for Pages Router is not a priority.)
 
+![Screenshot](./screenshot.png)
+
 # Getting started
 
 1. run `npm i next-seo-devtools -D`
